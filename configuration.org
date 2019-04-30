@@ -1,7 +1,7 @@
 #+TITLE: Emacs Configuration
 #+ORIGNAL:Harry R. Schwartz
-#+AUTHOR: MattLu
-#+EMAIL: lu.man@outlook.com
+#+AUTHOR: Lulzsec2012
+#+EMAIL: lulzsec2012@gmail.com
 #+OPTIONS: toc:nil num:nil
 [[https://github.com/hrs/dotfiles][Harry R. Schwartz]]
 * Use sensible-defaults.el
@@ -403,7 +403,7 @@ package.
   (diminish-major-mode 'emacs-lisp-mode-hook "el")
   (diminish-major-mode 'haskell-mode-hook "λ=")
   (diminish-major-mode 'lisp-interaction-mode-hook "λ")
-  (diminish-major-mode 'python-mode-hook "Py")
+  ;;(diminish-major-mode 'python-mode-hook "Py")
 #+END_SRC
 
 ** Highlight uncommitted changes
@@ -676,7 +676,7 @@ Indent everything by 2 spaces.
               (setq coffee-tab-width 2)))
 #+END_SRC
 
-** Lisps
+** COMMENT Lisps
 
 All the lisps have some shared features, so we want to do the same things for
 all of them. That includes using =paredit-mode= to balance parentheses (and
@@ -780,7 +780,7 @@ project root (if I'm not in a "real" project).
      (setq projectile-require-project-root nil))
 #+END_SRC
 
-** Python
+** COMMENT Python
 
 #+BEGIN_SRC emacs-lisp
 ;;  (setq python-environment-directory  '("/home/man.lu/local_python3"))
@@ -804,7 +804,7 @@ Indent 2 spaces.
 #+END_SRC
 
 
-Using jedi as python backend
+** COMMENT Using jedi as python backend
 
 #+BEGIN_SRC emacs-lisp
   (use-package elpy
@@ -829,7 +829,6 @@ Using jedi as python backend
 
   (setq python-shell-completion-native-enable nil) ;; disable warring in python promote bug
 #+END_SRC
-
 
 ** MATLAB
 #+BEGIN_SRC emacs-lisp
@@ -1712,7 +1711,58 @@ at the correct indentation for Python).
       (setq ido-vertical-define-keys 'C-n-and-C-p-only))
 #+END_SRC
 
-** Use =smex= to handle =M-x= with =ido=
+** COMMENT ivy + counsel + swiper
+   ivy configuration
+#+BEGIN_SRC emacs-lisp
+  (use-package ivy
+    :diminish (ivy-mode . "")
+    :config
+    (ivy-mode 1)
+    (setq ivy-use-virtual-buffers t
+          ivy-count-format "%d/%d "
+          enable-recursive-minibuffers t)
+    (setq ivy-re-builders-alist
+      '((swiper . ivy--regex-plus)
+        (t . ivy--regex-fuzzy)))
+    (setq ivy-initial-inputs-alist nil)
+    :custom-face
+    (isearch ((t (:background "brightcyan" :foreground "black"))))
+    (ivy-minibuffer-match-face-1
+     ((t (:background "green" :foreground "black"))))
+    (ivy-minibuffer-match-face-2
+     ((t (:background "yellow" :foreground "black" :weight bold))))
+    (ivy-minibuffer-match-face-3
+     ((t (:background "cyan" :foreground "black" :weight bold))))
+    (ivy-minibuffer-match-face-4
+     ((t (:background "#ffbbff" :foreground "black" :weight bold))))
+    (ivy-remote ((t (:foreground "color-202"))))
+    :ensure flx)
+#+END_SRC
+   counsel configuration (counsel package replay on swiper)
+#+BEGIN_SRC emacs-lisp
+    (use-package counsel
+      :config
+      (global-set-key "\C-r" 'swiper)
+      (global-set-key (kbd "C-c C-r") 'ivy-resume)
+      (global-set-key (kbd "M-x") 'counsel-M-x)
+      (global-set-key (kbd "C-x C-f") 'counsel-find-file)
+      (global-set-key (kbd "C-c k") 'counsel-ag)
+      (global-set-key (kbd "C-c f") 'counsel-recentf)
+      (global-set-key (kbd "C-c b") 'counsel-bookmark))
+#+END_SRC
+   better information for ivy switch buffer
+#+BEGIN_SRC emacs-lisp
+  (use-package ivy-rich
+    :config
+    (ivy-rich-mode 1)
+    (setq ivy-format-function #'ivy-format-function-line)
+    (setq ivy-rich-path-style 'abbrev)
+    :requires
+    ivy)
+#+END_SRC
+
+
+** COMMENT Use =smex= to handle =M-x= with =ido=
 
 #+BEGIN_SRC emacs-lisp
   (use-package smex

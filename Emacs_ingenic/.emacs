@@ -425,7 +425,13 @@ This is used by `comint-watch-for-password-prompt'."
   (find-file (concat default-directory filename))
   (goto-line (string-to-number (substring str (+ numN 1)))))
 
-;;(global-set-key (kbd "C-x r d")'bookmark-delete)
+(global-set-key [C-o] '_find-file)
+(defun _find-file(str)
+  "open a file and goto specific line. [Ctrl+o;F5]"
+  (interactive "c-o:")
+  (find-file (concat default-directory str)))
+
+(global-set-key (kbd "C-x r d")'bookmark-delete)
 (defun bookmark-delete (str)
   "Delete a specified bookmark"
   (interactive "d")
@@ -440,3 +446,24 @@ This is used by `comint-watch-for-password-prompt'."
 ;;(setq multi-term-program "/bin/bash")
 
 (global-set-key (kbd "C-x p")'ido-dired)
+
+(global-set-key (kbd "M-*")'ggtags-prev-mark)
+
+;;workgroups2
+(require 'workgroups2)
+;;(setq wg-session-load-on-start t)    ; default: (not (daemonp))
+
+;; Change prefix key (before activating WG)
+(setq wg-prefix-key (kbd "C-c z"))
+
+;; Change workgroups session file
+(setq wg-session-file "~/.emacs.d/.emacs_workgroups")
+
+;; Set your own keyboard shortcuts to reload/save/switch WGs:
+;; "s" == "Super" or "Win"-key, "S" == Shift, "C" == Control
+;;(global-set-key (kbd "<pause>")     'wg-reload-session)
+;;(global-set-key (kbd "C-S-<pause>") 'wg-save-session)
+;;(global-set-key (kbd "s-z")         'wg-switch-to-workgroup)
+;;(global-set-key (kbd "s-/")         'wg-switch-to-previous-workgroup)
+
+(workgroups-mode 1)   ; put this one at the bottom of .emacs
