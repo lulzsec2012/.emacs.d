@@ -361,6 +361,9 @@ This is used by `comint-watch-for-password-prompt'."
 ;; =================================================================
 (shell)
 (rename-buffer "shell-1")
+(shell)
+(rename-buffer "shell-2")
+;;(split-window-right)
 
 ;; If open a big verilog file and want to operate it fast, disable
 ;; global-font-lock-mode. Do: Alt-x global-font-lock-mode
@@ -447,23 +450,17 @@ This is used by `comint-watch-for-password-prompt'."
 
 (global-set-key (kbd "C-x p")'ido-dired)
 
-(global-set-key (kbd "M-*")'ggtags-prev-mark)
 
-;;workgroups2
-(require 'workgroups2)
-;;(setq wg-session-load-on-start t)    ; default: (not (daemonp))
+(global-set-key (kbd "C-x 5")'ace-swap-window)
+(global-set-key (kbd "M-[ h")'move-beginning-of-line)
+(global-set-key (kbd "M-[ f")'move-end-of-line)
 
-;; Change prefix key (before activating WG)
-(setq wg-prefix-key (kbd "C-c z"))
+;;gtags
+(add-hook 'c-mode-hook 'counsel-gtags-mode)
+(add-hook 'c++-mode-hook 'counsel-gtags-mode)
 
-;; Change workgroups session file
-(setq wg-session-file "~/.emacs.d/.emacs_workgroups")
-
-;; Set your own keyboard shortcuts to reload/save/switch WGs:
-;; "s" == "Super" or "Win"-key, "S" == Shift, "C" == Control
-;;(global-set-key (kbd "<pause>")     'wg-reload-session)
-;;(global-set-key (kbd "C-S-<pause>") 'wg-save-session)
-;;(global-set-key (kbd "s-z")         'wg-switch-to-workgroup)
-;;(global-set-key (kbd "s-/")         'wg-switch-to-previous-workgroup)
-
-(workgroups-mode 1)   ; put this one at the bottom of .emacs
+(with-eval-after-load 'counsel-gtags
+  (define-key counsel-gtags-mode-map (kbd "M-t") 'counsel-gtags-find-definition)
+  (define-key counsel-gtags-mode-map (kbd "M-r") 'counsel-gtags-find-reference)
+  (define-key counsel-gtags-mode-map (kbd "M-s") 'counsel-gtags-find-symbol)
+  (define-key counsel-gtags-mode-map (kbd "M-,") 'counsel-gtags-go-backward))
