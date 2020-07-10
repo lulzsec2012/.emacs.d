@@ -11,29 +11,6 @@
 ;; library cua-mode.el from Kim Storm at the following URL:
 (if (load "cua-mode" t) (CUA-mode t))
 
-;; Enable verilog mode font lock
-;; Load verilog mode only when needed
-(autoload 'verilog-mode "verilog-mode" "Verilog mode" t )
-;; Any files that end in .v should be in verilog mode
-(setq auto-mode-alist (cons  '("\\.v\\'" . verilog-mode) auto-mode-alist))
-;; Any files in verilog mode should have their keywords colorized
-;;(add-hook 'verilog-mode-hook '(lambda () (font-lock-mode 1)))
-
-;; Enable dcsh mode font lock
-(autoload 'dcsh-mode "dcsh-mode" "Dcsh Mode" t)
-(setq auto-mode-alist (cons '("\\.scr\\'" . dcsh-mode) auto-mode-alist))
-
-;; Enable specman mode font lock
-(autoload 'specman-mode "specman-mode" "Specman code editing mode" t)
-(setq auto-mode-alist
-	  (append (list
-		   (cons "\\.e\\'" 'specman-mode)
-		   (cons "\\.e3\\'" 'specman-mode)
-		   (cons "\\.load\\'" 'specman-mode)
-		   (cons "\\.ecom\\'" 'specman-mode)
-		   (cons "\\.etst\\'" 'specman-mode))
-		  auto-mode-alist))
-
 ;; enabel CUA mode in case emacs version >= 22
 (if (not (string-match "^21.*" emacs-version)) (cua-mode t))
 
@@ -47,17 +24,6 @@
    (cons (concat ENV_EMACS_DIR "template/") template-default-directories))
 (setq	verilog-auto-newline		nil
 	verilog-tab-always-indent 	nil)
-
-;; make verilog file .v
-;;(autoload 'verilog-mode "verilog-mode" "Verilog mode" t )
-;; load new verilog-mode file for old version
-;;(load (concat ENV_EMACS_DIR "verilog-mode.el") "verilog-mode" nil t )
-(autoload 'verilog-mode "verilog-mode" "Verilog mode" t )
-(setq auto-mode-alist (cons  '("\\.s?vh?\\'" . verilog-mode) auto-mode-alist))
-(setq auto-mode-alist (cons  '("\\.inc\\'" . verilog-mode) auto-mode-alist))
-
-;; add keyword to tcl for synopsys-tool:dc/pt/fm commands
-(load (concat ENV_EMACS_DIR "syn-keyword.el") t nil t)
 
 ;; =================================================================
 ;; Key Binding
@@ -332,25 +298,6 @@ This is used by `comint-watch-for-password-prompt'."
   (kill-line nil)
   (kill-line nil))
 
-;; verilog module assistant command and supported functions
-;;(global-set-key "\M-i" 'convert-list-to-instance)
-;;(global-set-key "\M-l" 'convert-declaration-to-list)
-;;(global-set-key "\M-d" 'convert-list-to-declaration)
-
-;;(defun convert-list-to-instance (start end)
-;;  "Convert port list selected to module instance"
-;;  (interactive "r")
-;;  (shell-command-on-region start end "/icdev/local/bin/pl_mi"))
-
-;;(defun convert-declaration-to-list (start end)
-;;  "Convert port declaration selected to port list"
-;;  (interactive "r")
-;;  (shell-command-on-region start end "/icdev/local/bin/pd_pl"))
-;;(defun convert-list-to-declaration (start end)
-;;  "Convert port list selected to port declaration"
-;;  (interactive "r")
-;;  (shell-command-on-region start end "/icdev/local/bin/pl_pd"))
-
 (defun convert-port-to-lib (start end)
   "Convert port list selected to lib definitions"
   (interactive "r")
@@ -374,28 +321,9 @@ This is used by `comint-watch-for-password-prompt'."
 
 ;; in ~/.group.emacs.el or in ~/.user.emacs.el, put following
 ;;(load (concat ENV_EMACS_DIR "color-set-*.el") t nil t)
-;;add by lzlu
-(load (concat ENV_EMACS_DIR "color-set-dark1.el") t nil t)
-;;add by lzlu
-;; to load a color set. The color-set-*.el file available are:
-;;    color-set-old.el       : old, dark background
-;;    color-set-dark1.el     : base on old, improved
-;;    color-set-light1.el    : light background
-;;    color-set-default.el   : emacs default
-;; if not, color-set-light1.el will be used
 
-;; if color has been set in group or user emacs, set this variable to t
-(defvar color-set-load nil
-  "If set, no more color set loaded.
-   Set this variable if personal color set userd")
-
-;;(if "~/.group.emacs.el" (load "~/.group.emacs.el" t nil t))
-;;(if "~/.user.emacs.el" (load "~/.user.emacs.el" t nil t))
-
-;; load light1 color set if color set has not been loaded
-(when (not color-set-load)
-  (load (concat ENV_EMACS_DIR "color-set-light1.el") t nil t))
-
+;;(load (concat ENV_EMACS_DIR "color-set-dark1.el") t nil t)
+;
 ;; display line number
 (global-linum-mode t)
 
@@ -417,7 +345,7 @@ This is used by `comint-watch-for-password-prompt'."
 (setq mouse-yank-at-point t)
 
 ;; set font
-(set-default-font "10x20")
+;; (set-default-font "10x20")
 
 (global-set-key [C-f5] 'find-file_goto-line)
 (defun find-file_goto-line(str)
